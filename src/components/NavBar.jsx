@@ -1,8 +1,33 @@
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+import axios from "axios";
+
+// Slices
+import { removeUser } from "../utils/userSlice";
+import { removeFeed } from "../utils/feedSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const user = useSelector((store) => store.user);
+
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/logout`,
+        {},
+        { withCredentials: true }
+      );
+
+      dispatch(removeUser());
+      dispatch(removeFeed());
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="navbar bg-base-300 shadow-sm">
@@ -34,16 +59,21 @@ const NavBar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/">Logout</NavLink>
+                <p onClick={handleLogout}>Logout</p>
               </li>
             </ul>
           </div>
         </div>
       )}
       {!user && (
-        <NavLink to="/login" className="btn btn-primary">
-          Login
-        </NavLink>
+        <div className="flex gap-4">
+          <NavLink to="/login" className="btn btn-outline btn-primary">
+            Login
+          </NavLink>
+          <NavLink to="/signup" className="btn btn-outline btn-primary">
+            Signup
+          </NavLink>
+        </div>
       )}
     </div>
   );
