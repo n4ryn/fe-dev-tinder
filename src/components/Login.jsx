@@ -6,9 +6,13 @@ import { NavLink, useNavigate } from "react-router";
 // Slices
 import { addUser } from "../utils/userSlice";
 
+// Utils
+import { useToast } from "../utils/ToastProvider";
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [emailId, setEmailId] = useState("john.doe@email.com");
   const [password, setPassword] = useState("Password@123");
@@ -31,10 +35,14 @@ const Login = () => {
       );
 
       dispatch(addUser(res?.data?.data?.user));
+      showToast(res?.data?.message, "success");
       navigate("/");
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 

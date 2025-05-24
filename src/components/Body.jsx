@@ -10,9 +10,14 @@ import Footer from "./Footer";
 // Slice
 import { addUser } from "../utils/userSlice";
 
+// Utils
+import { useToast } from "../utils/ToastProvider";
+
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showToast } = useToast();
+
   const user = useSelector((store) => store.user);
 
   const fetchUser = async () => {
@@ -24,11 +29,15 @@ const Body = () => {
         }
       );
       dispatch(addUser(res.data.data));
+      showToast(res?.data?.message, "success");
     } catch (error) {
       if (error.status === 401) {
         navigate("/login");
       }
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 

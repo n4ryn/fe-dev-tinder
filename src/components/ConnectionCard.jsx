@@ -1,8 +1,43 @@
-// Icons
-import { AcceptIcon, RejectIcon } from "../utils/icons";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
-const ConnectionCard = ({ user, request, handleReviewRequest, requestId }) => {
+// Slices
+import { removeRequest } from "../utils/requestSlice";
+import { updateConnection } from "../utils/connectionSlice";
+
+// Icons
+import { AcceptIcon, RejectIcon } from "../utils/Icons";
+
+// Utils
+import { useToast } from "../utils/ToastProvider";
+
+const ConnectionCard = ({ user, request, requestId }) => {
+  const dispatch = useDispatch();
+  const { showToast } = useToast();
+
   const { about, firstName, lastName, age, gender, photoUrl } = user;
+
+  // Handle Review Request
+  const handleReviewRequest = async (status) => {
+    try {
+      const res = await axios.post(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/request/review/${status}/${requestId}`,
+        {},
+        { withCredentials: true }
+      );
+
+      dispatch(removeRequest(requestId));
+      showToast(res?.data?.message, "success");
+      if (user) dispatch(updateConnection(user));
+    } catch (error) {
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
+    }
+  };
 
   return (
     <div className="card card-side bg-base-300 w-2xl shadow-xl rounded-xl px-8 py-4 justify-between items-center mb-4">
@@ -28,13 +63,13 @@ const ConnectionCard = ({ user, request, handleReviewRequest, requestId }) => {
         <div className="card-actions flex-col justify-center">
           <button
             className="btn btn-outline btn-success rounded-full h-14 w-14 hover:text-white"
-            onClick={() => handleReviewRequest("accepted", requestId, user)}
+            onClick={() => handleReviewRequest("accepted")}
           >
             <AcceptIcon />
           </button>
           <button
             className="btn btn-outline btn-error rounded-full h-14 w-14 hover:text-white"
-            onClick={() => handleReviewRequest("rejected", requestId)}
+            onClick={() => handleReviewRequest("rejected")}
           >
             <RejectIcon />
           </button>

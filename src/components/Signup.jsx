@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
+// Slices
+import { addUser } from "../utils/userSlice";
+
+// Utils
+import { useToast } from "../utils/ToastProvider";
+
 const Signup = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
@@ -21,16 +30,21 @@ const Signup = () => {
     }
 
     try {
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/signup`,
         { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
 
-      navigate("/login");
+      dispatch(addUser(res?.data?.data?.user));
+      showToast(res?.data?.message, "success");
+      navigate("/");
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 

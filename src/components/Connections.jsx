@@ -8,8 +8,13 @@ import ConnectionCard from "./ConnectionCard";
 // Slices
 import { addConnection } from "../utils/connectionSlice";
 
+// Utils
+import { useToast } from "../utils/ToastProvider";
+
 const Connections = () => {
   const dispatch = useDispatch();
+  const { showToast } = useToast();
+
   const connectionsData = useSelector((store) => store.connection);
 
   // Fetch Connections
@@ -21,8 +26,12 @@ const Connections = () => {
       );
 
       dispatch(addConnection(res?.data?.data));
+      showToast(res?.data?.message, "success");
     } catch (error) {
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 
@@ -32,13 +41,22 @@ const Connections = () => {
     }
   }, [connectionsData]);
 
+  // Render empty placeholder
+  const renderEmptyPlaceholder = (children) => (
+    <div className="h-[calc(100vh-300px)] flex justify-center items-center">
+      <p className="text-gray-500">{children}</p>
+    </div>
+  );
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">Connections</h1>
-      {!connectionsData && <p>Loading...</p>}
-      {connectionsData && connectionsData.length === 0 && (
-        <p>No new connection</p>
-      )}
+
+      {!connectionsData && renderEmptyPlaceholder("Loading...")}
+      {connectionsData &&
+        connectionsData.length === 0 &&
+        renderEmptyPlaceholder("No new connection found!")}
+
       {connectionsData &&
         connectionsData.map((row) => (
           <ConnectionCard key={row._id} user={row} request={false} />

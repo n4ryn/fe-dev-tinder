@@ -2,30 +2,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
 
-// Slices
-import { removeUser } from "../utils/userSlice";
-import { removeFeed } from "../utils/feedSlice";
+// Utils
+import { useToast } from "../utils/ToastProvider";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const user = useSelector((store) => store.user);
 
   // Handle Logout
   const handleLogout = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/logout`,
         {},
         { withCredentials: true }
       );
 
-      dispatch(removeUser());
-      dispatch(removeFeed());
+      dispatch({ type: "RESET_STORE" });
+      showToast(res?.data?.message, "success");
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 

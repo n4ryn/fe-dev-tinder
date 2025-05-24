@@ -17,7 +17,7 @@ export const InterestedIcon = () => {
   );
 };
 
-export const IgnoreIcon = () => {
+export const IgnoredIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
