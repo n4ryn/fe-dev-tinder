@@ -6,31 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import ConnectionCard from "./ConnectionCard";
 
 // Slices
-import { addRequest, removeRequest } from "../utils/requestSlice";
-import { updateConnection } from "../utils/connectionSlice";
+import { addRequest } from "../utils/requestSlice";
+
+// Utils
+import { useToast } from "../utils/ToastProvider";
 
 const Requests = () => {
   const dispatch = useDispatch();
+  const { showToast } = useToast();
 
   const requestsData = useSelector((store) => store.request);
-
-  // Handle Review Request
-  const handleReviewRequest = async (status, requestId, user) => {
-    try {
-      await axios.post(
-        `${
-          import.meta.env.VITE_BASE_URL
-        }/request/review/${status}/${requestId}`,
-        {},
-        { withCredentials: true }
-      );
-
-      dispatch(removeRequest(requestId));
-      if (user) dispatch(updateConnection(user));
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // Fetch connection requests
   const fetchRequests = async () => {
@@ -41,8 +26,12 @@ const Requests = () => {
       );
 
       dispatch(addRequest(res?.data?.data));
+      showToast(res?.data?.message, "success");
     } catch (error) {
-      console.log(error);
+      showToast(
+        error?.response?.data?.message || "Something went wrong",
+        "error"
+      );
     }
   };
 
@@ -52,13 +41,21 @@ const Requests = () => {
     }
   }, [requestsData]);
 
+  // Render empty placeholder
+  const renderEmptyPlaceholder = (children) => (
+    <div className="h-[calc(100vh-300px)] flex justify-center items-center">
+      <p className="text-gray-500">{children}</p>
+    </div>
+  );
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">Connection Requests</h1>
 
-      {!requestsData && <p>Loading...</p>}
-
-      {requestsData && requestsData.length === 0 && <p>No connection found</p>}
+      {!requestsData && renderEmptyPlaceholder("Loading...")}
+      {requestsData &&
+        requestsData.length === 0 &&
+        renderEmptyPlaceholder("No new connection request found!")}
 
       {requestsData &&
         requestsData.map((row) => (
@@ -66,7 +63,6 @@ const Requests = () => {
             key={row._id}
             user={row.fromUserId}
             request={true}
-            handleReviewRequest={handleReviewRequest}
             requestId={row._id}
           />
         ))}
