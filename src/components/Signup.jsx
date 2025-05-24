@@ -1,37 +1,33 @@
-import axios from "axios";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
+import axios from "axios";
 
-// Slices
-import { addUser } from "../utils/userSlice";
-
-const Login = () => {
-  const dispatch = useDispatch();
+const Signup = () => {
   const navigate = useNavigate();
 
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Doe");
   const [emailId, setEmailId] = useState("john.doe@email.com");
   const [password, setPassword] = useState("Password@123");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Handle User Login
-  const handleLogin = async () => {
+  // // Handle User Signup
+  const handleSignup = async () => {
     setErrorMessage("");
 
-    if (!emailId || !password) {
+    if (!firstName || !lastName || !emailId || !password) {
       setErrorMessage("Please fill required fields");
       return;
     }
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/login`,
-        { emailId: emailId.trim(), password: password.trim() },
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/signup`,
+        { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
 
-      dispatch(addUser(res?.data?.data?.user));
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
       console.log(error);
@@ -40,7 +36,27 @@ const Login = () => {
 
   return (
     <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto">
-      <legend className="fieldset-legend">Login</legend>
+      <legend className="fieldset-legend">Signup</legend>
+
+      <label className="label">First Name</label>
+      <input
+        type="text"
+        value={firstName}
+        required
+        className="input focus:border-none"
+        placeholder="Type here"
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+
+      <label className="label">Last Name</label>
+      <input
+        type="text"
+        value={lastName}
+        required
+        className="input focus:border-none"
+        placeholder="Type here"
+        onChange={(e) => setLastName(e.target.value)}
+      />
 
       <label className="label">Email</label>
       <input
@@ -66,18 +82,18 @@ const Login = () => {
         <p className="mt-3 text-red-300">Error: {errorMessage}</p>
       )}
 
-      <button className="btn btn-primary mt-4" onClick={handleLogin}>
-        Login
+      <button className="btn btn-primary mt-4" onClick={handleSignup}>
+        Signup
       </button>
 
       <p className="text-sm mt-4 card-actions justify-center">
-        Don't have an account?
-        <NavLink to="/signup" className="text-warning">
-          Signup
+        Already have an account?
+        <NavLink to="/login" className="text-warning">
+          Login
         </NavLink>
       </p>
     </fieldset>
   );
 };
 
-export default Login;
+export default Signup;
