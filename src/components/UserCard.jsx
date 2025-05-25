@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { removeUserFromFeed } from "../utils/feedSlice";
 
 // Icons
-import { IgnoredIcon, InterestedIcon } from "../utils/Icons";
+import { IgnoredIcon, InterestedIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";

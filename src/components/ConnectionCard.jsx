@@ -6,7 +6,7 @@ import { removeRequest } from "../utils/requestSlice";
 import { updateConnection } from "../utils/connectionSlice";
 
 // Icons
-import { AcceptIcon, RejectIcon } from "../utils/Icons";
+import { AcceptIcon, RejectIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";

@@ -9,7 +9,7 @@ import UserCard from "./UserCard";
 import { addUser } from "../utils/userSlice";
 
 // Icons
-import { CancelIcon } from "../utils/Icons";
+import { CancelIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
