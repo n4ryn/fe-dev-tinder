@@ -7,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { Logo } from "../utils/Icon";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,8 @@ const NavBar = () => {
           to="/"
           className="btn btn-ghost text-xl hover:bg-base-300 hover:border-base-300"
         >
-          PairPro🧑‍💻
+          <Logo />
+          PairPro
         </NavLink>
       </div>
 

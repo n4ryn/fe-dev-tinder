@@ -1,6 +1,6 @@
 # PairPro
 
-![PairPro](./public/vite.svg)
+![PairPro](./public/project.png)
 
 ## Description
 
