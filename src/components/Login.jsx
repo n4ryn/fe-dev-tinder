@@ -14,8 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const [emailId, setEmailId] = useState("john.doe@email.com");
-  const [password, setPassword] = useState("Password@123");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // Handle User Login
@@ -44,6 +44,11 @@ const Login = () => {
         "error"
       );
     }
+  };
+
+  const handleGuestLoginCred = async () => {
+    setEmailId("dummy@email.com");
+    setPassword("Password@123");
   };
 
   return (
@@ -83,6 +88,13 @@ const Login = () => {
         <NavLink to="/signup" className="text-warning">
           Signup
         </NavLink>
+      </p>
+
+      <p
+        className="text-xs mt-4 card-actions justify-center cursor-pointer hover:text-primary"
+        onClick={handleGuestLoginCred}
+      >
+        Login as Guest
       </p>
     </fieldset>
   );

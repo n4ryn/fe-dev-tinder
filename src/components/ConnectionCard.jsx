@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 // Slices
 import { removeRequest } from "../utils/requestSlice";
@@ -15,6 +16,7 @@ const ConnectionCard = ({ user, request, requestId }) => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
+  const [cardTilt, setCardTilt] = useState(0);
   const { about, firstName, lastName, age, gender, photoUrl } = user;
 
   // Handle Review Request
@@ -40,7 +42,13 @@ const ConnectionCard = ({ user, request, requestId }) => {
   };
 
   return (
-    <div className="card card-side bg-base-300 w-2xl shadow-xl rounded-xl px-8 py-4 justify-between items-center mb-4">
+    <div
+      className="card card-side bg-base-300 w-2xl shadow-xl rounded-xl px-8 py-4 justify-between items-center mb-4"
+      style={{
+        filter: `blur(${cardTilt > 0 ? 1 : 0}px)`,
+        transform: `scale(${cardTilt === 0 ? 1 : cardTilt > 0 ? 0.98 : 1.02})`,
+      }}
+    >
       <div className="flex gap-4 items-center">
         <div className="avatar">
           <div className="w-24 h-24 rounded-full">
@@ -62,13 +70,17 @@ const ConnectionCard = ({ user, request, requestId }) => {
       {request && (
         <div className="card-actions flex-col justify-center">
           <button
-            className="btn btn-outline btn-success rounded-full h-14 w-14 hover:text-white"
+            className="btn btn-outline btn-success border-2 btn-circle size-14 hover:text-white"
             onClick={() => handleReviewRequest("accepted")}
+            onMouseOver={() => setCardTilt(-2)}
+            onMouseOut={() => setCardTilt(0)}
           >
             <AcceptIcon />
           </button>
           <button
-            className="btn btn-outline btn-error rounded-full h-14 w-14 hover:text-white"
+            className="btn btn-outline btn-error border-2 btn-circle size-14 hover:text-white"
+            onMouseOver={() => setCardTilt(2)}
+            onMouseOut={() => setCardTilt(0)}
             onClick={() => handleReviewRequest("rejected")}
           >
             <RejectIcon />

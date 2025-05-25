@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
 
+// Components
+import ThemeToggle from "./ThemeToggle";
+
 // Utils
 import { useToast } from "../utils/ToastProvider";
 
@@ -35,10 +38,16 @@ const NavBar = () => {
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
-        <NavLink to="/" className="btn btn-ghost text-xl">
+        <NavLink
+          to="/"
+          className="btn btn-ghost text-xl hover:bg-base-300 hover:border-base-300"
+        >
           PairPro🧑‍💻
         </NavLink>
       </div>
+
+      <ThemeToggle />
+
       {user && (
         <div className="flex gap-2">
           <div className="dropdown dropdown-end mx-5">
@@ -78,7 +87,7 @@ const NavBar = () => {
         </div>
       )}
       {!user && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 mx-5">
           <NavLink to="/login" className="btn btn-outline btn-primary">
             Login
           </NavLink>

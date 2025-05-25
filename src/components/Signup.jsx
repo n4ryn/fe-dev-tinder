@@ -14,10 +14,10 @@ const Signup = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Doe");
-  const [emailId, setEmailId] = useState("john.doe@email.com");
-  const [password, setPassword] = useState("Password@123");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // // Handle User Signup
