@@ -30,7 +30,7 @@ const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
     formData.append("photo", image);
 
     try {
-      const res = await axios.post(
+      const res = await axios.patch(
         `${import.meta.env.VITE_BASE_URL}/profile/photo`,
         formData,
         { withCredentials: true }
