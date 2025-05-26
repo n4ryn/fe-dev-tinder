@@ -7,8 +7,9 @@ import { updateUser } from "../utils/userSlice";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { Input } from "./ui";
 
-const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
+const UploadFile = ({ user, setErrorMessage }) => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
@@ -17,6 +18,7 @@ const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
   const [image, setImage] = useState(null);
   const [loader, setLoader] = useState(false);
 
+  // Handle Modal Close
   const onModalClose = () => {
     setImage(null);
     setTempImage(null);
@@ -37,10 +39,8 @@ const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
       );
 
       dispatch(updateUser({ ...user, photoUrl: res?.data?.data?.secureUrl }));
-      setPhotoUrl(res?.data?.data?.secureUrl);
       showToast(res?.data?.message, "success");
     } catch (error) {
-      console.log(error);
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
       showToast(
         error?.response?.data?.message || "Something went wrong",
@@ -68,10 +68,8 @@ const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
               </div>
             </div>
 
-            <input
+            <Input
               type="file"
-              accept="image/jpeg, image/png, image/jpg"
-              className="file-input"
               ref={fileInputRef}
               onChange={(e) => {
                 setImage(e.target.files[0]);

@@ -4,71 +4,80 @@ import axios from "axios";
 
 // Components
 import UserCard from "./UserCard";
+import UploadFile from "./UploadFile";
+import { Input, TextArea, Select, ChipInput } from "./ui";
 
 // Slices
 import { addUser } from "../utils/userSlice";
 
 // Icons
-import { CameraIcon, CancelIcon } from "../utils/Icon";
+import { CameraIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
-import UploadFile from "./UploadFile";
 
 const EditProfile = ({ user }) => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
-  const [firstName, setFirstName] = useState(user?.firstName || "");
-  const [lastName, setLastName] = useState(user?.lastName || "");
-  const [about, setAbout] = useState(user?.about || "");
-  const [skills, setSkills] = useState(user?.skills || []);
-  const [age, setAge] = useState(user?.age || "");
-  const [gender, setGender] = useState(user?.gender || "");
-  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
+  const [updatedData, setUpdatedData] = useState({
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    about: user?.about || "",
+    skills: user?.skills || [],
+    age: user?.age || "",
+    gender: user?.gender || "",
+  });
+
   const [errorMessage, setErrorMessage] = useState("");
-  const [inputChip, setInputChip] = useState("");
-
-  // Handle Chip addition
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && inputChip.trim()) {
-      e.preventDefault();
-      if (!skills.includes(inputChip.trim())) {
-        setSkills([...skills, inputChip.trim()]);
-      }
-      setInputChip("");
-    }
-
-    if (e.key === "Backspace" && inputChip === "" && skills.length > 0) {
-      setSkills(skills.slice(0, skills.length - 1));
-    }
-  };
-
-  // Handle Chip removal
-  const removeSkill = (indexToRemove) => {
-    setSkills(skills.filter((_, index) => index !== indexToRemove));
-  };
 
   // Handle Edit Profile
   const handleEditProfile = async () => {
     setErrorMessage("");
 
+    const updatedFields = {};
+
+    // Filter out empty fields
+    Object.keys(updatedData).forEach((key) => {
+      if (key === "skills") {
+        const originalSkills = (user.skills || [])
+          .map((skill) => skill.trim())
+          .filter(Boolean);
+        const updatedSkills = (updatedData.skills || [])
+          .map((skill) => skill.trim())
+          .filter(Boolean);
+
+        const skillsChanged =
+          originalSkills.length !== updatedSkills.length ||
+          !updatedSkills.every((skill, i) => skill === originalSkills[i]);
+
+        if (skillsChanged) {
+          updatedFields.skills = updatedSkills;
+        }
+      } else if (key === "age" && updatedData.age !== user.age) {
+        updatedFields.age = updatedData.age;
+      } else if (
+        updatedData[key] !== user[key] &&
+        typeof updatedData[key] === "string" &&
+        updatedData[key].trim()
+      ) {
+        updatedFields[key] = updatedData[key].trim();
+      }
+    });
+
+    if (Object.keys(updatedFields).length === 0) {
+      showToast("Update at least one field", "error");
+      return;
+    }
+
     try {
       const res = await axios.patch(
         `${import.meta.env.VITE_BASE_URL}/profile/edit`,
-        {
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          about: about.trim(),
-          skills: skills.filter((skill) => skill.trim() !== ""),
-          age: age,
-          gender: gender.trim(),
-          photoUrl: photoUrl.trim(),
-        },
+        updatedFields,
         { withCredentials: true }
       );
 
-      dispatch(addUser(res?.data?.data));
+      dispatch(addUser({ ...user, ...res?.data?.data }));
       showToast(res?.data?.message, "success");
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
@@ -87,7 +96,7 @@ const EditProfile = ({ user }) => {
 
           <div className=" avatar w-full flex justify-center relative">
             <div className="w-24 rounded-full">
-              <img src={photoUrl} alt="Avatar" />
+              <img src={user.photoUrl} alt="Avatar" />
             </div>
             <p
               className="absolute top-16 right-24 badge bg-base-100 shadow-md/30 shadow-accent rounded-full cursor-pointer size-10"
@@ -97,82 +106,59 @@ const EditProfile = ({ user }) => {
             </p>
           </div>
 
-          <label className="label">First Name</label>
-          <input
+          <Input
             type="text"
-            value={firstName}
-            required
-            className="input focus:border-none"
-            placeholder="Type here"
-            onChange={(e) => setFirstName(e.target.value)}
+            label="First Name"
+            value={updatedData.firstName}
+            onChange={(e) =>
+              setUpdatedData({ ...updatedData, firstName: e.target.value })
+            }
           />
 
-          <label className="label">Last Name</label>
-          <input
+          <Input
             type="text"
-            value={lastName}
-            required
-            className="input focus:border-none"
-            placeholder="Type here"
-            onChange={(e) => setLastName(e.target.value)}
+            label="Last Name"
+            value={updatedData.lastName}
+            onChange={(e) =>
+              setUpdatedData({ ...updatedData, lastName: e.target.value })
+            }
           />
 
-          <label className="label">About</label>
-          <textarea
-            value={about}
-            required
-            placeholder="Type here"
-            className="textarea textarea-bordered w-full max-w-xs focus:border-none"
-            onChange={(e) => setAbout(e.target.value)}
+          <TextArea
+            label="About"
+            value={updatedData.about}
+            onChange={(e) =>
+              setUpdatedData({ ...updatedData, about: e.target.value })
+            }
           />
 
-          <label className="label">Age</label>
-          <input
+          <Input
             type="number"
-            value={age}
-            required
-            className="input focus:border-none"
-            placeholder="Type here"
-            onChange={(e) => setAge(e.target.value)}
+            label="Age"
+            value={updatedData.age}
+            onChange={(e) =>
+              setUpdatedData({ ...updatedData, age: Number(e.target.value) })
+            }
           />
 
-          <label className="label">Gender</label>
-          <select
-            value={gender}
-            className="select focus:border-none"
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option disabled={true}>Select a gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="others">Others</option>
-          </select>
+          <Select
+            label="Gender"
+            value={updatedData.gender}
+            options={[
+              { label: "Male", value: "male" },
+              { label: "Female", value: "female" },
+              { label: "Others", value: "others" },
+            ]}
+            onChange={(e) =>
+              setUpdatedData({ ...updatedData, gender: e.target.value })
+            }
+          />
 
-          <label className="label">Skills</label>
-          <div className="flex flex-wrap items-center gap-1 px-3 py-2 bg-base-100 border-double border-gray-600 rounded-md focus-within:ring-2 focus-within:ring-gray-200">
-            {skills.map((skill, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 bg-gray-200 px-2 py-1 rounded-full text-sm"
-              >
-                <p className="text-black">{skill}</p>
-                <p
-                  onClick={() => removeSkill(index)}
-                  className="text-black hover:text-error cursor-pointer"
-                >
-                  <CancelIcon />
-                </p>
-              </div>
-            ))}
-            <input
-              type="text"
-              value={inputChip}
-              className="flex-grow min-w-[100px] outline-none border-none focus:ring-0 text-sm"
-              placeholder="Type and press Enter"
-              onChange={(e) => setInputChip(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
+          <ChipInput
+            label="Skills"
+            value={updatedData.skills}
+            onChange={(e) => setUpdatedData({ ...updatedData, skills: e })}
+          />
 
           {errorMessage && (
             <p className="mt-3 text-red-300">Error: {errorMessage}</p>
@@ -184,16 +170,12 @@ const EditProfile = ({ user }) => {
         </fieldset>
 
         <UserCard
-          data={{ firstName, lastName, about, photoUrl, age, gender }}
+          data={{ ...updatedData, photoUrl: user.photoUrl }}
           restrict={true}
         />
       </div>
 
-      <UploadFile
-        user={user}
-        setPhotoUrl={setPhotoUrl}
-        setErrorMessage={setErrorMessage}
-      />
+      <UploadFile user={user} setErrorMessage={setErrorMessage} />
     </>
   );
 };

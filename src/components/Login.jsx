@@ -8,6 +8,7 @@ import { addUser } from "../utils/userSlice";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { Input } from "./ui";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -52,26 +53,22 @@ const Login = () => {
   };
 
   return (
-    <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto">
+    <fieldset
+      className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto"
+      onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+    >
       <legend className="fieldset-legend">Login</legend>
 
-      <label className="label">Email</label>
-      <input
+      <Input
         type="email"
+        label="Email"
         value={emailId}
-        required
-        className="input focus:border-none"
-        placeholder="Email"
         onChange={(e) => setEmailId(e.target.value)}
       />
-
-      <label className="label">Password</label>
-      <input
+      <Input
         type="password"
+        label="Password"
         value={password}
-        required
-        className="input focus:border-none"
-        placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
 

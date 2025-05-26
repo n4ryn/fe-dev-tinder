@@ -40,7 +40,7 @@ const NavBar = () => {
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
         <NavLink
-          to="/"
+          to={user && "/"}
           className="btn btn-ghost text-xl hover:bg-base-300 hover:border-base-300"
         >
           <Logo />

@@ -28,7 +28,6 @@ const UserCard = ({ data, restrict }) => {
       );
 
       dispatch(removeUserFromFeed(_id));
-      // showToast(res?.data?.message, "success");
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",

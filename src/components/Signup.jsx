@@ -8,6 +8,7 @@ import { addUser } from "../utils/userSlice";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { Input } from "./ui";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -49,46 +50,37 @@ const Signup = () => {
   };
 
   return (
-    <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto">
+    <fieldset
+      className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto"
+      onKeyDown={(e) => e.key === "Enter" && handleSignup()}
+    >
       <legend className="fieldset-legend">Signup</legend>
 
-      <label className="label">First Name</label>
-      <input
+      <Input
         type="text"
+        label="First Name"
         value={firstName}
-        required
-        className="input focus:border-none"
-        placeholder="Type here"
         onChange={(e) => setFirstName(e.target.value)}
       />
 
-      <label className="label">Last Name</label>
-      <input
+      <Input
         type="text"
+        label="Last Name"
         value={lastName}
-        required
-        className="input focus:border-none"
-        placeholder="Type here"
         onChange={(e) => setLastName(e.target.value)}
       />
 
-      <label className="label">Email</label>
-      <input
+      <Input
         type="email"
+        label="Email"
         value={emailId}
-        required
-        className="input focus:border-none"
-        placeholder="Email"
         onChange={(e) => setEmailId(e.target.value)}
       />
 
-      <label className="label">Password</label>
-      <input
+      <Input
         type="password"
+        label="Password"
         value={password}
-        required
-        className="input focus:border-none"
-        placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
 
