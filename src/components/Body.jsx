@@ -19,6 +19,7 @@ const Body = () => {
   const { showToast } = useToast();
 
   const user = useSelector((store) => store.user);
+  const isToken = document?.cookie?.split("=")[0] === "token";
 
   const fetchUser = async () => {
     try {
@@ -42,10 +43,8 @@ const Body = () => {
   };
 
   useState(() => {
-    if (!user) {
-      fetchUser();
-    }
-  }, [user]);
+    isToken && fetchUser();
+  }, [user, isToken]);
 
   return (
     <div className="flex flex-col min-h-screen">

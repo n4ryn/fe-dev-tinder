@@ -36,10 +36,8 @@ const Requests = () => {
   };
 
   useEffect(() => {
-    if (!requestsData) {
-      fetchRequests();
-    }
-  }, [requestsData]);
+    fetchRequests();
+  }, []);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (

@@ -15,7 +15,7 @@ const ThemeToggle = () => {
   };
 
   return (
-    <label className="swap swap-rotate">
+    <label className="swap swap-rotate hover:scale-110 transition-transform duration-300">
       <input
         type="checkbox"
         className="theme-controller"
@@ -24,8 +24,8 @@ const ThemeToggle = () => {
         checked={theme === "sunset"}
       />
 
-      <LightModeIcon />
       <DarkModeIcon />
+      <LightModeIcon />
     </label>
   );
 };

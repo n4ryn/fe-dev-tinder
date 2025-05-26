@@ -36,10 +36,8 @@ const Connections = () => {
   };
 
   useEffect(() => {
-    if (!connectionsData) {
-      fetchConnections();
-    }
-  }, [connectionsData]);
+    fetchConnections();
+  }, []);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (

@@ -37,10 +37,8 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    if (!feed) {
-      getFeed();
-    }
-  }, [feed]);
+    getFeed();
+  }, []);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (

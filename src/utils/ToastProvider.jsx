@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useCallback } from "react";
 
+// Icons
+import { RejectIcon } from "./Icon";
+
 const ToastContext = createContext();
 
 export const useToast = () => useContext(ToastContext);
@@ -21,6 +24,12 @@ export const ToastProvider = ({ children }) => {
         <div className="toast toast-top toast-center z-50">
           <div className={`alert ${toastClass}`}>
             <span>{toast.message}</span>
+            <button
+              className="btn btn-ghost btn-circle size-4"
+              onClick={() => setToast({ message: "", type: "success" })}
+            >
+              <RejectIcon />
+            </button>
           </div>
         </div>
       )}

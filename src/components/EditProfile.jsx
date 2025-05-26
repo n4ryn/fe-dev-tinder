@@ -9,10 +9,11 @@ import UserCard from "./UserCard";
 import { addUser } from "../utils/userSlice";
 
 // Icons
-import { CancelIcon } from "../utils/Icon";
+import { CameraIcon, CancelIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import UploadFile from "./UploadFile";
 
 const EditProfile = ({ user }) => {
   const dispatch = useDispatch();
@@ -80,19 +81,21 @@ const EditProfile = ({ user }) => {
 
   return (
     <>
-      <div className="flex gap-20 justify-center items-center">
+      <div className="flex flex-col md:flex-row gap-20 justify-center items-center">
         <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4">
           <legend className="fieldset-legend">Edit</legend>
 
-          {/* TODO: Add avatar upload modal */}
-          {/* <div className="avatar w-full flex justify-center relative">
-          <div className="w-24 rounded-full bg-gray-200">
-            <img src={photoUrl} alt="Avatar" />
+          <div className=" avatar w-full flex justify-center relative">
+            <div className="w-24 rounded-full">
+              <img src={photoUrl} alt="Avatar" />
+            </div>
+            <p
+              className="absolute top-16 right-24 badge bg-base-100 shadow-md/30 shadow-accent rounded-full cursor-pointer size-10"
+              onClick={() => document.getElementById("my_modal_5").showModal()}
+            >
+              <CameraIcon />
+            </p>
           </div>
-          <p className="badge badge-xs absolute bottom-0 right-24 bg-gray-600 cursor-pointer rounded-full w-8 h-8">
-            <CameraIcon />
-          </p>
-        </div> */}
 
           <label className="label">First Name</label>
           <input
@@ -131,16 +134,6 @@ const EditProfile = ({ user }) => {
             className="input focus:border-none"
             placeholder="Type here"
             onChange={(e) => setAge(e.target.value)}
-          />
-
-          <label className="label">Photo Url</label>
-          <input
-            type="text"
-            value={photoUrl}
-            required
-            className="input focus:border-none"
-            placeholder="Type here"
-            onChange={(e) => setPhotoUrl(e.target.value)}
           />
 
           <label className="label">Gender</label>
@@ -195,6 +188,12 @@ const EditProfile = ({ user }) => {
           restrict={true}
         />
       </div>
+
+      <UploadFile
+        user={user}
+        setPhotoUrl={setPhotoUrl}
+        setErrorMessage={setErrorMessage}
+      />
     </>
   );
 };

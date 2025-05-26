@@ -26,8 +26,8 @@ const NavBar = () => {
       );
 
       dispatch({ type: "RESET_STORE" });
-      showToast(res?.data?.message, "success");
       navigate("/login");
+      showToast(res?.data?.message, "success");
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
@@ -51,8 +51,18 @@ const NavBar = () => {
       <ThemeToggle />
 
       {user && (
-        <div className="flex gap-2">
-          <div className="dropdown dropdown-end mx-5">
+        <div className="flex gap-5 mx-5">
+          {/* TODO: Add Notification */}
+          {/* <button className="btn btn-ghost btn-circle">
+            <div className="indicator">
+              <BellIcon />
+              <span className="badge badge-xs badge-secondary indicator-item">
+                8
+              </span>
+            </div>
+          </button> */}
+
+          <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"

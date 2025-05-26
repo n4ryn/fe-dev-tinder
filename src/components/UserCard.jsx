@@ -39,7 +39,7 @@ const UserCard = ({ data, restrict }) => {
 
   return (
     <div
-      className="card bg-base-300 w-96 shadow-xl rounded-4xl transition-transform duration-300"
+      className="card bg-base-300 w-96 rounded-3xl shadow-lg/20 shadow-accent transition-transform duration-300"
       style={{
         transform: `rotate(${cardTilt}deg) scale(${
           cardTilt === 0 ? 1 : cardTilt > 0 ? 0.98 : 1.02
@@ -54,16 +54,18 @@ const UserCard = ({ data, restrict }) => {
 
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>
-        {age && gender && (
+        {(age || gender) && (
           <p className="font-extralight capitalize mb-2">
-            {age + ", " + gender}
+            {age && age}
+            {age && gender && ", "}
+            {gender && gender}
           </p>
         )}
         <p className="line-clamp-2">{about}</p>
 
         <div className="card-actions justify-center gap-16 mt-4">
           <button
-            className="btn btn-outline btn-secondary border-2 btn-circle size-14 hover:text-white"
+            className="btn btn-outline btn-secondary border-2 btn-circle size-14 hover:text-white shadow-lg/40 shadow-secondary"
             onMouseOver={() => setCardTilt(-2)}
             onMouseOut={() => setCardTilt(0)}
             onClick={() => {
@@ -73,7 +75,7 @@ const UserCard = ({ data, restrict }) => {
             <InterestedIcon />
           </button>
           <button
-            className="btn btn-outline btn-warning border-2 btn-circle size-14 hover:text-white"
+            className="btn btn-outline btn-warning border-2 btn-circle size-14 hover:text-white shadow-lg/40 shadow-warning"
             onMouseOver={() => setCardTilt(2)}
             onMouseOut={() => setCardTilt(0)}
             onClick={() => {
