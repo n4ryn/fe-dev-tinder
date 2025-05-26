@@ -36,8 +36,8 @@ const UploadFile = ({ user, setPhotoUrl, setErrorMessage }) => {
         { withCredentials: true }
       );
 
-      dispatch(updateUser({ ...user, photoUrl: res?.data?.data?.url }));
-      setPhotoUrl(res?.data?.data?.url);
+      dispatch(updateUser({ ...user, photoUrl: res?.data?.data?.secureUrl }));
+      setPhotoUrl(res?.data?.data?.secureUrl);
       showToast(res?.data?.message, "success");
     } catch (error) {
       console.log(error);
