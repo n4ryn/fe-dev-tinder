@@ -92,6 +92,37 @@ const NavBar = () => {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/privacy-policy" className="justify-between">
+                  Privacy Policy
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/terms-and-conditions" className="justify-between">
+                  Terms and Conditions
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/cancellation-and-refund-policy"
+                  className="justify-between"
+                >
+                  Cancellation and Refund Policy
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/shipping-and-delivery-policy"
+                  className="justify-between"
+                >
+                  Shipping and Delivery Policy
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact-us" className="justify-between">
+                  Contact Us
+                </NavLink>
+              </li>
+              <li>
                 <p onClick={handleLogout}>Logout</p>
               </li>
             </ul>
