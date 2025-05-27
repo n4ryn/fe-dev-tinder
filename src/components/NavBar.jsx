@@ -91,7 +91,7 @@ const NavBar = () => {
                   Requests
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink to="/privacy-policy" className="justify-between">
                   Privacy Policy
                 </NavLink>
@@ -121,7 +121,7 @@ const NavBar = () => {
                 <NavLink to="/contact-us" className="justify-between">
                   Contact Us
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <p onClick={handleLogout}>Logout</p>
               </li>
