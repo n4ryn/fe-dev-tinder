@@ -33,7 +33,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/connections" element={<Connections />} />
                 <Route path="/requests" element={<Requests />} />
-                <Route path="/contact-us" element={<ContactUs />} />
+                {/* <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route
                   path="/terms-and-conditions"
@@ -46,7 +46,7 @@ function App() {
                 <Route
                   path="/shipping-and-delivery-policy"
                   element={<ShippingAndDelivery />}
-                />
+                /> */}
               </Route>
             </Routes>
           </BrowserRouter>
