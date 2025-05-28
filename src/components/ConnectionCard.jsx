@@ -11,13 +11,14 @@ import { AcceptIcon, RejectIcon } from "../utils/Icon";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { NavLink } from "react-router";
 
 const ConnectionCard = ({ user, request, requestId }) => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
   const [cardTilt, setCardTilt] = useState(0);
-  const { about, firstName, lastName, age, gender, photoUrl } = user;
+  const { about, firstName, lastName, age, gender, photoUrl, _id } = user;
 
   // Handle Review Request
   const handleReviewRequest = async (status) => {
@@ -88,6 +89,15 @@ const ConnectionCard = ({ user, request, requestId }) => {
             <RejectIcon />
           </button>
         </div>
+      )}
+
+      {!request && (
+        <NavLink
+          to={`/chat/${_id}`}
+          className="btn btn-outline btn-accent hover:text-white shadow-md/30 shadow-primary"
+        >
+          Chat
+        </NavLink>
       )}
     </div>
   );
