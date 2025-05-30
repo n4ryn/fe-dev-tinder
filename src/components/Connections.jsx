@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Components
 import ConnectionCard from "./ConnectionCard";
+import { ConnectionCardSkeleton } from "../utils/Shimmer";
 
 // Slices
 import { addConnection } from "../utils/connectionSlice";
@@ -36,8 +37,8 @@ const Connections = () => {
   };
 
   useEffect(() => {
-    fetchConnections();
-  }, []);
+    if (!connectionsData) fetchConnections();
+  }, [connectionsData]);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (
@@ -50,7 +51,14 @@ const Connections = () => {
     <div className="flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">Connections</h1>
 
-      {!connectionsData && renderEmptyPlaceholder("Loading...")}
+      {!connectionsData && (
+        <>
+          <ConnectionCardSkeleton request={false} />
+          <ConnectionCardSkeleton request={false} />
+          <ConnectionCardSkeleton request={false} />
+          <ConnectionCardSkeleton request={false} />
+        </>
+      )}
       {connectionsData &&
         connectionsData.length === 0 &&
         renderEmptyPlaceholder("No new connection found!")}

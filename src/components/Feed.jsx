@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Components
 import UserCard from "./UserCard";
+import { UserCardSkeleton } from "../utils/Shimmer";
 
 // Slice
-import { addFeed } from "../utils/feedSlice";
+import { addFeed, updateFeed } from "../utils/feedSlice";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
@@ -17,17 +18,26 @@ const Feed = () => {
 
   const user = useSelector((store) => store.user);
   const feed = useSelector((store) => store.feed);
+  let currentPage = useRef(1);
 
   // Fetch feed
-  const getFeed = async () => {
+  const getFeed = async (page) => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/user/feed`,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          params: { page, limit: 10, ignored: feed?.map((row) => row?._id) },
+        }
       );
 
-      dispatch(addFeed(res?.data?.data));
-      showToast(res?.data?.message, "success");
+      const data = res?.data?.data.users || [];
+      if (page === 1) {
+        showToast(res?.data?.message, "success");
+        dispatch(addFeed(data));
+      } else if (data.length > 0) {
+        dispatch(updateFeed(data));
+      }
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
@@ -37,8 +47,17 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    getFeed();
-  }, []);
+    if (user && (!feed || feed.length === 0)) {
+      getFeed(currentPage.current);
+    }
+  }, [user, feed]);
+
+  useEffect(() => {
+    if (feed && feed.length === 3) {
+      currentPage.current += 1;
+      getFeed(currentPage.current);
+    }
+  }, [feed]);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (
@@ -57,18 +76,20 @@ const Feed = () => {
         )}
       </div>
 
-      {!feed && renderEmptyPlaceholder("Loading...")}
+      {!feed && <UserCardSkeleton />}
       {feed &&
         feed.length === 0 &&
         renderEmptyPlaceholder("No new user found!")}
 
-      {feed && (
-        <div className="stack w-96">
-          {feed.map((row) => (
-            <UserCard key={row._id} data={row} />
-          ))}
-        </div>
-      )}
+      <div className="flex">
+        {feed && feed.length > 0 && (
+          <div className="stack w-96">
+            {feed.map((row) => (
+              <UserCard key={row._id} data={row} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 // Components
@@ -18,7 +18,6 @@ const Body = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const user = useSelector((store) => store.user);
   const isToken = document?.cookie?.split("=")[0] === "token";
 
   const fetchUser = async () => {
@@ -42,9 +41,13 @@ const Body = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isToken) navigate("/login");
+  }, [isToken, navigate]);
+
   useState(() => {
-    isToken && fetchUser();
-  }, [user, isToken]);
+    if (isToken) fetchUser();
+  }, [isToken]);
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -10,6 +10,7 @@ import { addRequest } from "../utils/requestSlice";
 
 // Utils
 import { useToast } from "../utils/ToastProvider";
+import { ConnectionCardSkeleton } from "../utils/Shimmer";
 
 const Requests = () => {
   const dispatch = useDispatch();
@@ -36,8 +37,8 @@ const Requests = () => {
   };
 
   useEffect(() => {
-    fetchRequests();
-  }, []);
+    if (!requestsData) fetchRequests();
+  }, [requestsData]);
 
   // Render empty placeholder
   const renderEmptyPlaceholder = (children) => (
@@ -50,7 +51,14 @@ const Requests = () => {
     <div className="flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">Connection Requests</h1>
 
-      {!requestsData && renderEmptyPlaceholder("Loading...")}
+      {!requestsData && (
+        <>
+          <ConnectionCardSkeleton request={true} />
+          <ConnectionCardSkeleton request={true} />
+          <ConnectionCardSkeleton request={true} />
+          <ConnectionCardSkeleton request={true} />
+        </>
+      )}
       {requestsData &&
         requestsData.length === 0 &&
         renderEmptyPlaceholder("No new connection request found!")}

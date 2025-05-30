@@ -91,37 +91,6 @@ const NavBar = () => {
                   Requests
                 </NavLink>
               </li>
-              {/* <li>
-                <NavLink to="/privacy-policy" className="justify-between">
-                  Privacy Policy
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/terms-and-conditions" className="justify-between">
-                  Terms and Conditions
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/cancellation-and-refund-policy"
-                  className="justify-between"
-                >
-                  Cancellation and Refund Policy
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/shipping-and-delivery-policy"
-                  className="justify-between"
-                >
-                  Shipping and Delivery Policy
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/contact-us" className="justify-between">
-                  Contact Us
-                </NavLink>
-              </li> */}
               <li>
                 <p onClick={handleLogout}>Logout</p>
               </li>
@@ -131,12 +100,16 @@ const NavBar = () => {
       )}
       {!user && (
         <div className="flex gap-4 mx-5">
-          <NavLink to="/login" className="btn btn-outline btn-primary">
-            Login
-          </NavLink>
-          <NavLink to="/signup" className="btn btn-outline btn-primary">
-            Signup
-          </NavLink>
+          {location.pathname !== "/login" && (
+            <NavLink to="/login" className="btn btn-outline btn-primary">
+              Login
+            </NavLink>
+          )}
+          {location.pathname !== "/signup" && (
+            <NavLink to="/signup" className="btn btn-outline btn-primary">
+              Signup
+            </NavLink>
+          )}
         </div>
       )}
     </div>
