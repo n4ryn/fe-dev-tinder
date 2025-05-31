@@ -44,7 +44,7 @@ const ConnectionCard = ({ user, request, requestId }) => {
 
   return (
     <div
-      className="card md:card-side bg-base-300 md:w-2xl shadow-md/30 shadow-accent transition-transform duration-300 rounded-xl px-8 py-4 justify-between items-center mb-4"
+      className="card md:card-side md:items-center bg-base-300 md:w-2xl shadow-md/30 shadow-accent transition-transform duration-300 rounded-xl px-8 py-4 gap-4 md:gap-0 justify-between items-center mb-4"
       style={{
         filter: `blur(${cardTilt > 0 ? 1 : 0}px)`,
         transform: `scale(${cardTilt === 0 ? 1 : cardTilt > 0 ? 0.98 : 1.02})`,
@@ -93,7 +93,7 @@ const ConnectionCard = ({ user, request, requestId }) => {
 
       {!request && (
         <NavLink
-          to={`/chat/${_id}`}
+          to={`/chat`}
           className="btn btn-outline btn-accent hover:text-white shadow-md/30 shadow-primary"
         >
           Chat
