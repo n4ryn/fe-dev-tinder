@@ -82,6 +82,11 @@ const NavBar = () => {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/pricing" className="justify-between">
+                  Pricing
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/connections" className="justify-between">
                   Connections
                 </NavLink>
