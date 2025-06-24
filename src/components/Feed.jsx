@@ -2,14 +2,11 @@ import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
-// Slice
 import { addFeed, updateFeed } from "../utils/feedSlice";
 import { UserCardSkeleton } from "../utils/Shimmer";
 
-// Components
 import UserCard from "./UserCard";
 
 const Feed = () => {

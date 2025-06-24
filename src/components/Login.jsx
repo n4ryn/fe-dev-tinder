@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 
 import { useAuth } from "../context/AuthProvider";
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 // Slices

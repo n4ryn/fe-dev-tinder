@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router";
 
-// Utils
 import { useAuth } from "../context/AuthProvider";
 
-// Components
 import Footer from "./Footer";
 import NavBar from "./NavBar";
 

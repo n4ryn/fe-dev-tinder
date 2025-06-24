@@ -3,13 +3,11 @@ import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 
 import { useAuth } from "../context/AuthProvider";
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 import { Logo } from "../utils/Icon";
 import { getUser } from "../utils/utilFunctions";
 
-// Components
 import ThemeToggle from "./ThemeToggle";
 
 const NavBar = () => {

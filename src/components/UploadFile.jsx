@@ -2,7 +2,6 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 // Slices

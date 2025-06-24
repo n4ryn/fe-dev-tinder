@@ -3,7 +3,6 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import connectionReducer from "./connectionSlice";
 import feedReducer from "./feedSlice";
 import requestReducer from "./requestSlice";
-// Import all slices
 import userReducer from "./userSlice";
 
 // Combine all slice reducers

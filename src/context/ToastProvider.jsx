@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
-// Icons
 import { RejectIcon } from "../utils/Icon";
 
 const ToastContext = createContext();

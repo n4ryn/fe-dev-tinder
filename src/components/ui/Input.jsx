@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Icons
 import { EyeOffIcon, EyeOnIcon } from "../../utils/Icon";
 
 const Input = props => {

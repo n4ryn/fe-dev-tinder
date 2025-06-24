@@ -2,12 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { removeUserFromFeed } from "../utils/feedSlice";
-// Icons
 import { IgnoredIcon, InterestedIcon } from "../utils/Icon";
 
 const UserCard = ({ data, restrict }) => {

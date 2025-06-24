@@ -2,13 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 import { pricingData } from "../utils/constants";
-// Icons
 import { IncludedIcon, NotIncludedIcon } from "../utils/Icon";
-// Slice
 import { addUser } from "../utils/userSlice";
 
 const Pricing = () => {

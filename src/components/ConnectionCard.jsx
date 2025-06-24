@@ -3,13 +3,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 import { updateConnection } from "../utils/connectionSlice";
-// Icons
 import { AcceptIcon, RejectIcon } from "../utils/Icon";
-// Slices
 import { removeRequest } from "../utils/requestSlice";
 
 const ConnectionCard = ({ user, request, requestId }) => {

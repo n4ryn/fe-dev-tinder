@@ -2,13 +2,11 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
 import { addConnection } from "../utils/connectionSlice";
 import { createSocketConnection } from "../utils/socket";
 
-// Components
 import MessageBubble from "./MessageBubble";
 import Input from "./ui/Input";
 

@@ -2,17 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
-// Icons
 import { CameraIcon } from "../utils/Icon";
-// Slices
 import { addUser } from "../utils/userSlice";
 
 import { ChipInput, Input, Select, TextArea } from "./ui";
 import UploadFile from "./UploadFile";
-// Components
 import UserCard from "./UserCard";
 
 const EditProfile = ({ user }) => {

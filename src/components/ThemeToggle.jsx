@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-// Icons
 import { DarkModeIcon, LightModeIcon } from "../utils/Icon";
 
 const ThemeToggle = () => {

@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router";
 
-// Components
 import Body from "./components/Body";
 import Chat from "./components/Chat";
 import Connections from "./components/Connections";
@@ -15,19 +14,15 @@ import Signup from "./components/Signup";
 import { AuthProvider } from "./context/AuthProvider";
 import { ToastProvider } from "./context/ToastProvider";
 
-// Utils
 import appStore from "./utils/appStore";
-import { getUser } from "./utils/utilFunctions";
 
 function App() {
-  const user = getUser();
-
   return (
     <>
       <ToastProvider>
         <Provider store={appStore}>
           <BrowserRouter basename="/">
-            <AuthProvider user={user}>
+            <AuthProvider>
               <Routes>
                 <Route path="/" element={<Body />}>
                   <Route path="/" element={<Feed />} />

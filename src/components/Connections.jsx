@@ -2,14 +2,11 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Utils
 import { useToast } from "../context/ToastProvider";
 
-// Slices
 import { addConnection } from "../utils/connectionSlice";
 import { ConnectionCardSkeleton } from "../utils/Shimmer";
 
-// Components
 import ConnectionCard from "./ConnectionCard";
 
 const Connections = () => {

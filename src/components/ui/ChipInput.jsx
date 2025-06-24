@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Icons
 import { CancelIcon } from "../../utils/Icon";
 
 const ChipInput = props => {
