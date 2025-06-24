@@ -6,6 +6,7 @@ import Chat from "./components/Chat";
 import Connections from "./components/Connections";
 import Feed from "./components/Feed";
 import Login from "./components/Login";
+import NotFound from "./components/NotFound";
 import Pricing from "./components/Pricing";
 import Profile from "./components/Profile";
 import Requests from "./components/Requests";
@@ -25,7 +26,7 @@ function App() {
             <AuthProvider>
               <Routes>
                 <Route path="/" element={<Body />}>
-                  <Route path="/" element={<Feed />} />
+                  <Route index element={<Feed />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/profile" element={<Profile />} />
@@ -33,6 +34,8 @@ function App() {
                   <Route path="/requests" element={<Requests />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/pricing" element={<Pricing />} />
+
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </AuthProvider>

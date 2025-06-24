@@ -23,8 +23,21 @@ export const AuthProvider = ({ children }) => {
 
   const publicPaths = ["/login", "/signup"];
   const isPublicPath = publicPaths.includes(location.pathname);
+  const knownPaths = [
+    "/",
+    "/login",
+    "/signup",
+    "/profile",
+    "/connections",
+    "/requests",
+    "/chat",
+    "/pricing",
+  ];
+  const isKnownPath = knownPaths.includes(location.pathname);
 
   const requireAuth = () => {
+    if (!isKnownPath) return true;
+
     if (user?.firstName && isPublicPath) {
       navigate("/");
       return false;
