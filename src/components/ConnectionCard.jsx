@@ -1,17 +1,16 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { useState } from "react";
-
-// Slices
-import { removeRequest } from "../utils/requestSlice";
-import { updateConnection } from "../utils/connectionSlice";
-
-// Icons
-import { AcceptIcon, RejectIcon } from "../utils/Icon";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router";
 
 // Utils
-import { useToast } from "../utils/ToastProvider";
-import { NavLink } from "react-router";
+import { useToast } from "../context/ToastProvider";
+
+import { updateConnection } from "../utils/connectionSlice";
+// Icons
+import { AcceptIcon, RejectIcon } from "../utils/Icon";
+// Slices
+import { removeRequest } from "../utils/requestSlice";
 
 const ConnectionCard = ({ user, request, requestId }) => {
   const dispatch = useDispatch();
@@ -21,14 +20,14 @@ const ConnectionCard = ({ user, request, requestId }) => {
   const { about, firstName, lastName, age, gender, photoUrl, _id } = user;
 
   // Handle Review Request
-  const handleReviewRequest = async (status) => {
+  const handleReviewRequest = async status => {
     try {
       const res = await axios.post(
         `${
           import.meta.env.VITE_BASE_URL
         }/request/review/${status}/${requestId}`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(removeRequest(requestId));
@@ -37,7 +36,7 @@ const ConnectionCard = ({ user, request, requestId }) => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };

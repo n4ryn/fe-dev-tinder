@@ -2,33 +2,37 @@ import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Components
-import UserCard from "./UserCard";
-import { UserCardSkeleton } from "../utils/Shimmer";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slice
 import { addFeed, updateFeed } from "../utils/feedSlice";
+import { UserCardSkeleton } from "../utils/Shimmer";
 
-// Utils
-import { useToast } from "../utils/ToastProvider";
+// Components
+import UserCard from "./UserCard";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
-  const user = useSelector((store) => store.user);
-  const feed = useSelector((store) => store.feed);
+  const user = useSelector(store => store.user);
+  const feed = useSelector(store => store.feed);
   let currentPage = useRef(1);
 
   // Fetch feed
-  const getFeed = async (page) => {
+  const getFeed = async page => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/user/feed`,
         {
           withCredentials: true,
-          params: { page, limit: 10, ignored: feed?.map((row) => row?._id) },
-        }
+          params: {
+            page,
+            limit: 10,
+            ignored: feed?.map(row => row?._id),
+          },
+        },
       );
 
       const data = res?.data?.data.users || [];
@@ -41,7 +45,7 @@ const Feed = () => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -60,7 +64,7 @@ const Feed = () => {
   }, [feed]);
 
   // Render empty placeholder
-  const renderEmptyPlaceholder = (children) => (
+  const renderEmptyPlaceholder = children => (
     <div className="h-[calc(100vh-300px)] flex justify-center items-center">
       <p className="text-gray-500">{children}</p>
     </div>
@@ -84,7 +88,7 @@ const Feed = () => {
       <div className="flex">
         {feed && feed.length > 0 && (
           <div className="stack w-96">
-            {feed.map((row) => (
+            {feed.map(row => (
               <UserCard key={row._id} data={row} />
             ))}
           </div>

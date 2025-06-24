@@ -1,12 +1,13 @@
+import axios from "axios";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { updateUser } from "../utils/userSlice";
 
-// Utils
-import { useToast } from "../utils/ToastProvider";
 import { Input } from "./ui";
 
 const UploadFile = ({ user, setErrorMessage }) => {
@@ -35,7 +36,7 @@ const UploadFile = ({ user, setErrorMessage }) => {
       const res = await axios.patch(
         `${import.meta.env.VITE_BASE_URL}/profile/photo`,
         formData,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(updateUser({ ...user, photoUrl: res?.data?.data?.secureUrl }));
@@ -44,7 +45,7 @@ const UploadFile = ({ user, setErrorMessage }) => {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
 
@@ -71,7 +72,7 @@ const UploadFile = ({ user, setErrorMessage }) => {
             <Input
               type="file"
               ref={fileInputRef}
-              onChange={(e) => {
+              onChange={e => {
                 setImage(e.target.files[0]);
                 setTempImage(URL.createObjectURL(e.target.files[0]));
               }}

@@ -1,15 +1,14 @@
 import axios from "axios";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { removeUserFromFeed } from "../utils/feedSlice";
-
 // Icons
 import { IgnoredIcon, InterestedIcon } from "../utils/Icon";
-
-// Utils
-import { useToast } from "../utils/ToastProvider";
-import { useState } from "react";
 
 const UserCard = ({ data, restrict }) => {
   const dispatch = useDispatch();
@@ -19,19 +18,19 @@ const UserCard = ({ data, restrict }) => {
   const { _id, about, firstName, lastName, age, gender, photoUrl } = data;
 
   // Handle Send Request
-  const handleSendRequest = async (status) => {
+  const handleSendRequest = async status => {
     try {
       await axios.post(
         `${import.meta.env.VITE_BASE_URL}/request/send/${status}/${_id}`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(removeUserFromFeed(_id));
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };

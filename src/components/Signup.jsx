@@ -1,19 +1,22 @@
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
 import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+
+import { useAuth } from "../context/AuthProvider";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { addUser } from "../utils/userSlice";
 
-// Utils
-import { useToast } from "../utils/ToastProvider";
 import { Input } from "./ui";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { setUser } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -34,17 +37,18 @@ const Signup = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/signup`,
         { firstName, lastName, emailId, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(addUser(res?.data?.data?.user));
       showToast(res?.data?.message, "success");
+      setUser(res?.data?.data?.user);
       navigate("/");
     } catch (error) {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -52,7 +56,7 @@ const Signup = () => {
   return (
     <fieldset
       className="fieldset bg-base-300 border-base-300 rounded-box w-xs border p-4 mx-auto"
-      onKeyDown={(e) => e.key === "Enter" && handleSignup()}
+      onKeyDown={e => e.key === "Enter" && handleSignup()}
     >
       <legend className="fieldset-legend">Signup</legend>
 
@@ -60,28 +64,28 @@ const Signup = () => {
         type="text"
         label="First Name"
         value={firstName}
-        onChange={(e) => setFirstName(e.target.value)}
+        onChange={e => setFirstName(e.target.value)}
       />
 
       <Input
         type="text"
         label="Last Name"
         value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
+        onChange={e => setLastName(e.target.value)}
       />
 
       <Input
         type="email"
         label="Email"
         value={emailId}
-        onChange={(e) => setEmailId(e.target.value)}
+        onChange={e => setEmailId(e.target.value)}
       />
 
       <Input
         type="password"
         label="Password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
 
       {errorMessage && (

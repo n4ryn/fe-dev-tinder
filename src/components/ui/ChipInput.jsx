@@ -3,13 +3,13 @@ import { useState } from "react";
 // Icons
 import { CancelIcon } from "../../utils/Icon";
 
-const ChipInput = (props) => {
+const ChipInput = props => {
   const { label, value = [], onChange = () => {} } = props;
 
   const [inputValue, setInputValue] = useState("");
 
   // Handle Chip addition
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
       if (!value.includes(inputValue.trim())) {
@@ -24,7 +24,7 @@ const ChipInput = (props) => {
   };
 
   // Handle Chip removal
-  const handleRemove = (indexToRemove) => {
+  const handleRemove = indexToRemove => {
     const updated = value.filter((_, index) => index !== indexToRemove);
     onChange(updated);
   };
@@ -52,7 +52,7 @@ const ChipInput = (props) => {
           value={inputValue}
           className="flex-grow min-w-[100px] outline-none border-none focus:ring-0 text-sm bg-transparent"
           placeholder="Type and press Enter"
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={e => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
       </div>

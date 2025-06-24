@@ -1,10 +1,10 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+import connectionReducer from "./connectionSlice";
+import feedReducer from "./feedSlice";
+import requestReducer from "./requestSlice";
 // Import all slices
 import userReducer from "./userSlice";
-import feedReducer from "./feedSlice";
-import connectionReducer from "./connectionSlice";
-import requestReducer from "./requestSlice";
 
 // Combine all slice reducers
 const appReducer = combineReducers({

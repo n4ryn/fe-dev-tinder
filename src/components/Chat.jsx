@@ -1,15 +1,16 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+
+// Utils
+import { useToast } from "../context/ToastProvider";
+
+import { addConnection } from "../utils/connectionSlice";
+import { createSocketConnection } from "../utils/socket";
 
 // Components
 import MessageBubble from "./MessageBubble";
 import Input from "./ui/Input";
-
-// Utils
-import { useToast } from "../utils/ToastProvider";
-import { createSocketConnection } from "../utils/socket";
-import { addConnection } from "../utils/connectionSlice";
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [receiverId, setReceiverId] = useState("");
-  const user = useSelector((store) => store.user);
-  const connections = useSelector((store) => store.connection);
+  const user = useSelector(store => store.user);
+  const connections = useSelector(store => store.connection);
   const [loading, setLoading] = useState(false);
 
   const senderId = user?._id;
@@ -31,7 +32,7 @@ const Chat = () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/user/connections`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(addConnection(res?.data?.data));
@@ -39,7 +40,7 @@ const Chat = () => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -50,14 +51,14 @@ const Chat = () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/chat/${receiverId}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       setMessages(res.data.data.messages);
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
     setLoading(false);
@@ -87,11 +88,11 @@ const Chat = () => {
 
     socket.emit("join", { receiverId, senderId });
 
-    socket.on("messageReceived", (message) => {
-      setMessages((messages) => [...messages, message]);
+    socket.on("messageReceived", message => {
+      setMessages(messages => [...messages, message]);
     });
 
-    socket.on("error", (error) => {
+    socket.on("error", error => {
       showToast(error, "error");
     });
 
@@ -105,12 +106,14 @@ const Chat = () => {
     if (newMessage) {
       const socket = createSocketConnection();
 
-      socket.emit("sendMessage", { message: newMessage, senderId, receiverId });
+      socket.emit("sendMessage", {
+        message: newMessage,
+        senderId,
+        receiverId,
+      });
       setNewMessage("");
     }
   };
-
-  console.log(messages);
 
   return (
     <div className="flex items-start gap-1">
@@ -120,7 +123,7 @@ const Chat = () => {
         </div>
 
         <ul className="list bg-base-200 shadow-md h-[calc(100vh-232px)] overflow-auto">
-          {connections?.map((user) => (
+          {connections?.map(user => (
             <li
               key={user._id}
               className={`list-row hover:bg-base-100 cursor-pointer ${
@@ -176,7 +179,7 @@ const Chat = () => {
               type="text"
               className="input join-item w-full focus:outline-none"
               placeholder="Type here"
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={e => setNewMessage(e.target.value)}
             />
             <button
               disabled={!receiverId}

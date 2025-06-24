@@ -2,20 +2,19 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Slice
-import { addUser } from "../utils/userSlice";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
+import { pricingData } from "../utils/constants";
 // Icons
 import { IncludedIcon, NotIncludedIcon } from "../utils/Icon";
-
-// Utils
-import { useToast } from "../utils/ToastProvider";
-import { pricingData } from "../utils/constants";
+// Slice
+import { addUser } from "../utils/userSlice";
 
 const Pricing = () => {
   const { showToast } = useToast();
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.user);
+  const user = useSelector(store => store.user);
 
   useEffect(() => {
     verifyPremiumUser();
@@ -24,7 +23,7 @@ const Pricing = () => {
   const verifyPremiumUser = async () => {
     const res = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/profile/view`,
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     dispatch(addUser(res.data.data));
@@ -34,12 +33,12 @@ const Pricing = () => {
     }
   };
 
-  const handleTransaction = async (membershipType) => {
+  const handleTransaction = async membershipType => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/payment/create`,
         { membershipType },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       const { amount, currency, orderId, keyId, notes } = res.data.data;
@@ -67,7 +66,7 @@ const Pricing = () => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -76,7 +75,7 @@ const Pricing = () => {
     <>
       <p className="text-center text-2xl font-bold mb-10">Pricing</p>
       <div className="w-full flex justify-center items-center gap-10">
-        {pricingData.map((item) => (
+        {pricingData.map(item => (
           <div key={item.id} className="card w-96 bg-base-300 shadow-sm">
             <div className="card-body">
               {item.popular && (

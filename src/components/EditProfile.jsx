@@ -1,20 +1,19 @@
+import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 
-// Components
-import UserCard from "./UserCard";
-import UploadFile from "./UploadFile";
-import { Input, TextArea, Select, ChipInput } from "./ui";
-
-// Slices
-import { addUser } from "../utils/userSlice";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Icons
 import { CameraIcon } from "../utils/Icon";
+// Slices
+import { addUser } from "../utils/userSlice";
 
-// Utils
-import { useToast } from "../utils/ToastProvider";
+import { ChipInput, Input, Select, TextArea } from "./ui";
+import UploadFile from "./UploadFile";
+// Components
+import UserCard from "./UserCard";
 
 const EditProfile = ({ user }) => {
   const dispatch = useDispatch();
@@ -38,13 +37,13 @@ const EditProfile = ({ user }) => {
     const updatedFields = {};
 
     // Filter out empty fields
-    Object.keys(updatedData).forEach((key) => {
+    Object.keys(updatedData).forEach(key => {
       if (key === "skills") {
         const originalSkills = (user.skills || [])
-          .map((skill) => skill.trim())
+          .map(skill => skill.trim())
           .filter(Boolean);
         const updatedSkills = (updatedData.skills || [])
-          .map((skill) => skill.trim())
+          .map(skill => skill.trim())
           .filter(Boolean);
 
         const skillsChanged =
@@ -74,7 +73,7 @@ const EditProfile = ({ user }) => {
       const res = await axios.patch(
         `${import.meta.env.VITE_BASE_URL}/profile/edit`,
         updatedFields,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(addUser({ ...user, ...res?.data?.data }));
@@ -83,7 +82,7 @@ const EditProfile = ({ user }) => {
       setErrorMessage(error?.response?.data?.message || "Something went wrong");
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -110,8 +109,11 @@ const EditProfile = ({ user }) => {
             type="text"
             label="First Name"
             value={updatedData.firstName}
-            onChange={(e) =>
-              setUpdatedData({ ...updatedData, firstName: e.target.value })
+            onChange={e =>
+              setUpdatedData({
+                ...updatedData,
+                firstName: e.target.value,
+              })
             }
           />
 
@@ -119,16 +121,22 @@ const EditProfile = ({ user }) => {
             type="text"
             label="Last Name"
             value={updatedData.lastName}
-            onChange={(e) =>
-              setUpdatedData({ ...updatedData, lastName: e.target.value })
+            onChange={e =>
+              setUpdatedData({
+                ...updatedData,
+                lastName: e.target.value,
+              })
             }
           />
 
           <TextArea
             label="About"
             value={updatedData.about}
-            onChange={(e) =>
-              setUpdatedData({ ...updatedData, about: e.target.value })
+            onChange={e =>
+              setUpdatedData({
+                ...updatedData,
+                about: e.target.value,
+              })
             }
           />
 
@@ -136,8 +144,11 @@ const EditProfile = ({ user }) => {
             type="number"
             label="Age"
             value={updatedData.age}
-            onChange={(e) =>
-              setUpdatedData({ ...updatedData, age: Number(e.target.value) })
+            onChange={e =>
+              setUpdatedData({
+                ...updatedData,
+                age: Number(e.target.value),
+              })
             }
           />
 
@@ -149,15 +160,18 @@ const EditProfile = ({ user }) => {
               { label: "Female", value: "female" },
               { label: "Others", value: "others" },
             ]}
-            onChange={(e) =>
-              setUpdatedData({ ...updatedData, gender: e.target.value })
+            onChange={e =>
+              setUpdatedData({
+                ...updatedData,
+                gender: e.target.value,
+              })
             }
           />
 
           <ChipInput
             label="Skills"
             value={updatedData.skills}
-            onChange={(e) => setUpdatedData({ ...updatedData, skills: e })}
+            onChange={e => setUpdatedData({ ...updatedData, skills: e })}
           />
 
           {errorMessage && (

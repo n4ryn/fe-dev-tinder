@@ -2,28 +2,28 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Components
-import ConnectionCard from "./ConnectionCard";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { addRequest } from "../utils/requestSlice";
-
-// Utils
-import { useToast } from "../utils/ToastProvider";
 import { ConnectionCardSkeleton } from "../utils/Shimmer";
+
+// Components
+import ConnectionCard from "./ConnectionCard";
 
 const Requests = () => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
-  const requestsData = useSelector((store) => store.request);
+  const requestsData = useSelector(store => store.request);
 
   // Fetch connection requests
   const fetchRequests = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/user/requests`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(addRequest(res?.data?.data));
@@ -31,7 +31,7 @@ const Requests = () => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -41,7 +41,7 @@ const Requests = () => {
   }, [requestsData]);
 
   // Render empty placeholder
-  const renderEmptyPlaceholder = (children) => (
+  const renderEmptyPlaceholder = children => (
     <div className="h-[calc(100vh-300px)] flex justify-center items-center">
       <p className="text-gray-500">{children}</p>
     </div>
@@ -64,7 +64,7 @@ const Requests = () => {
         renderEmptyPlaceholder("No new connection request found!")}
 
       {requestsData &&
-        requestsData.map((row) => (
+        requestsData.map(row => (
           <ConnectionCard
             key={row._id}
             user={row.fromUserId}

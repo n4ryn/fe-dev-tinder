@@ -1,4 +1,4 @@
-const Select = (props) => {
+const Select = props => {
   const { label, value, options, ...other } = props;
 
   return (

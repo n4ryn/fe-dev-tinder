@@ -1,20 +1,24 @@
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+
+import { useAuth } from "../context/AuthProvider";
+// Utils
+import { useToast } from "../context/ToastProvider";
+
+import { Logo } from "../utils/Icon";
+import { getUser } from "../utils/utilFunctions";
 
 // Components
 import ThemeToggle from "./ThemeToggle";
-
-// Utils
-import { useToast } from "../utils/ToastProvider";
-import { Logo } from "../utils/Icon";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { setUser } = useAuth();
 
-  const user = useSelector((store) => store.user);
+  const user = getUser();
 
   // Handle Logout
   const handleLogout = async () => {
@@ -22,16 +26,17 @@ const NavBar = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/logout`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch({ type: "RESET_STORE" });
+      setUser(null);
       navigate("/login");
       showToast(res?.data?.message, "success");
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -40,7 +45,7 @@ const NavBar = () => {
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
         <NavLink
-          to={user && "/"}
+          to={"/"}
           className="btn btn-ghost text-xl hover:bg-base-300 hover:border-base-300"
         >
           <Logo />
@@ -103,6 +108,7 @@ const NavBar = () => {
           </div>
         </div>
       )}
+
       {!user && (
         <div className="flex gap-4 mx-5">
           {location.pathname !== "/login" && (

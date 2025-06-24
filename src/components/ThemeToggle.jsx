@@ -11,7 +11,7 @@ const ThemeToggle = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const handleToggle = (e) => {
+  const handleToggle = e => {
     setTheme(e.target.checked ? "sunset" : "light");
   };
 

@@ -1,4 +1,4 @@
-const MessageBubble = (prop) => {
+const MessageBubble = prop => {
   const { userId, senderId, message, createdAt, status } = prop;
 
   const isLoggedInUser = userId === senderId?._id;

@@ -2,28 +2,28 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// Components
-import ConnectionCard from "./ConnectionCard";
-import { ConnectionCardSkeleton } from "../utils/Shimmer";
+// Utils
+import { useToast } from "../context/ToastProvider";
 
 // Slices
 import { addConnection } from "../utils/connectionSlice";
+import { ConnectionCardSkeleton } from "../utils/Shimmer";
 
-// Utils
-import { useToast } from "../utils/ToastProvider";
+// Components
+import ConnectionCard from "./ConnectionCard";
 
 const Connections = () => {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
-  const connectionsData = useSelector((store) => store.connection);
+  const connectionsData = useSelector(store => store.connection);
 
   // Fetch Connections
   const fetchConnections = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/user/connections`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       dispatch(addConnection(res?.data?.data));
@@ -31,7 +31,7 @@ const Connections = () => {
     } catch (error) {
       showToast(
         error?.response?.data?.message || "Something went wrong",
-        "error"
+        "error",
       );
     }
   };
@@ -41,7 +41,7 @@ const Connections = () => {
   }, [connectionsData]);
 
   // Render empty placeholder
-  const renderEmptyPlaceholder = (children) => (
+  const renderEmptyPlaceholder = children => (
     <div className="h-[calc(100vh-300px)] flex justify-center items-center">
       <p className="text-gray-500">{children}</p>
     </div>
@@ -64,7 +64,7 @@ const Connections = () => {
         renderEmptyPlaceholder("No new connection found!")}
 
       {connectionsData &&
-        connectionsData.map((row) => (
+        connectionsData.map(row => (
           <ConnectionCard key={row._id} user={row} request={false} />
         ))}
     </div>

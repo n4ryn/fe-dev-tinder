@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 // Icons
-import { EyeOnIcon, EyeOffIcon } from "../../utils/Icon";
+import { EyeOffIcon, EyeOnIcon } from "../../utils/Icon";
 
-const Input = (props) => {
+const Input = props => {
   const { label, value, type, ...other } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +28,7 @@ const Input = (props) => {
       {isPasswordType && (
         <span
           className="absolute right-3 top-1/2 cursor-pointer"
-          onClick={() => setShowPassword((prev) => !prev)}
+          onClick={() => setShowPassword(prev => !prev)}
         >
           {showPassword ? <EyeOffIcon /> : <EyeOnIcon />}
         </span>
