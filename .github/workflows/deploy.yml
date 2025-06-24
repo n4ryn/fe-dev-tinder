@@ -33,9 +33,9 @@ jobs:
             nvm install --lts
             nvm use --lts
 
-            REPO_URL="https://github.com/n4ryn/be-pair-pro.git"
+            REPO_URL="https://github.com/n4ryn/fe-pair-pro.git"
             BRANCH="main"
-            REPO_DIR="$HOME/be-pair-pro"
+            REPO_DIR="$HOME/fe-pair-pro"
 
             if [ -d "$REPO_DIR/.git" ]; then
               cd "$REPO_DIR"
